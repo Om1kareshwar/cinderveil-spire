@@ -217,7 +217,6 @@ func update_animations(delta: float) -> void:
 			sprite.frame = 23
 
 func handle_void_fall() -> void:
-	SoundManager.play_sfx("hit", 0.7)
 	GameManager.damage_player(1)
 	if GameManager.current_health > 0:
 		velocity = Vector2.ZERO
@@ -241,7 +240,6 @@ func take_damage(amount: int, knockback: Vector2 = Vector2.ZERO) -> void:
 	current_state = State.HURT
 	velocity = knockback
 	GameManager.damage_player(amount)
-	SoundManager.play_sfx("hit", 0.8)
 
 	sprite.modulate = Color(4.0, 1.0, 1.0, 1.0)
 	get_tree().create_timer(0.3).timeout.connect(func():

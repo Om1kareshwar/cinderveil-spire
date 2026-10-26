@@ -13,7 +13,6 @@ var is_game_over: bool = false
 var is_victory: bool = false
 
 func _enter_tree() -> void:
-	# Ensure default input actions exist across any Godot 4.x environment
 	setup_default_inputs()
 
 func _ready() -> void:
@@ -36,7 +35,6 @@ func setup_default_inputs() -> void:
 			event.physical_keycode = keycode
 			InputMap.action_add_event(action, event)
 			
-	# Also add Left Mouse Click to attack
 	if InputMap.has_action("attack"):
 		var mouse_event = InputEventMouseButton.new()
 		mouse_event.button_index = MOUSE_BUTTON_LEFT
@@ -47,6 +45,7 @@ func reset_run() -> void:
 	ember_count = 0
 	is_game_over = false
 	is_victory = false
+	SoundManager.restart_bgm()
 	emit_signal("hp_changed", current_health, max_health)
 	emit_signal("embers_changed", ember_count)
 
@@ -59,6 +58,9 @@ func damage_player(amount: int) -> void:
 	if current_health <= 0:
 		is_game_over = true
 		emit_signal("player_died")
+		SoundManager.play_game_over_theme()
+	else:
+		SoundManager.play_heart_lost()
 
 func heal_player(amount: int) -> void:
 	current_health = min(max_health, current_health + amount)
