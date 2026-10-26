@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Texture2D" path="res://assets/sprites/parallax_bg.png" id="1_bg"]
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
@@ -10,25 +10,125 @@
 [ext_resource type="Script" path="res://scripts/camera_controller.gd" id="8_cam"]
 [ext_resource type="Texture2D" path="res://assets/sprites/tileset.png" id="9_tiles"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ground"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_grass"]
 atlas = ExtResource("9_tiles")
-region = Rect2(16, 0, 16, 16)
+region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_platform"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_fence"]
+atlas = ExtResource("9_tiles")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_haystack"]
+atlas = ExtResource("9_tiles")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cart"]
+atlas = ExtResource("9_tiles")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wall"]
 atlas = ExtResource("9_tiles")
 region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_roof"]
+atlas = ExtResource("9_tiles")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_door"]
+atlas = ExtResource("9_tiles")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_window"]
+atlas = ExtResource("9_tiles")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_crate"]
+atlas = ExtResource("9_tiles")
+region = Rect2(32, 32, 16, 16)
 
 [node name="Main" type="Node2D"]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2(0.2, 0.1)
+motion_scale = Vector2(0.25, 0.1)
 motion_mirroring = Vector2(384, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
 position = Vector2(192, 108)
 texture = ExtResource("1_bg")
+
+[node name="VillageScenery" type="Node2D" parent="."]
+
+[node name="Fence1" type="Sprite2D" parent="VillageScenery"]
+position = Vector2(90, 180)
+texture = SubResource("AtlasTexture_fence")
+
+[node name="Fence2" type="Sprite2D" parent="VillageScenery"]
+position = Vector2(106, 180)
+texture = SubResource("AtlasTexture_fence")
+
+[node name="Fence3" type="Sprite2D" parent="VillageScenery"]
+position = Vector2(122, 180)
+texture = SubResource("AtlasTexture_fence")
+
+[node name="Haystack" type="Sprite2D" parent="VillageScenery"]
+position = Vector2(145, 178)
+scale = Vector2(1.8, 1.8)
+texture = SubResource("AtlasTexture_haystack")
+
+[node name="FarmCart" type="Sprite2D" parent="VillageScenery"]
+position = Vector2(190, 178)
+scale = Vector2(1.5, 1.5)
+texture = SubResource("AtlasTexture_cart")
+
+[node name="CottageHouse" type="Node2D" parent="VillageScenery"]
+position = Vector2(650, 188)
+
+[node name="HouseWall_L" type="Sprite2D" parent="VillageScenery/CottageHouse"]
+position = Vector2(-36, -24)
+scale = Vector2(3, 3)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="HouseWall_R" type="Sprite2D" parent="VillageScenery/CottageHouse"]
+position = Vector2(36, -24)
+scale = Vector2(3, 3)
+texture = SubResource("AtlasTexture_wall")
+
+[node name="HouseDoor" type="Sprite2D" parent="VillageScenery/CottageHouse"]
+position = Vector2(-20, -18)
+scale = Vector2(2, 2.2)
+texture = SubResource("AtlasTexture_door")
+
+[node name="HouseWindow" type="Sprite2D" parent="VillageScenery/CottageHouse"]
+position = Vector2(34, -26)
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_window")
+
+[node name="Crates" type="Sprite2D" parent="VillageScenery/CottageHouse"]
+position = Vector2(68, -14)
+scale = Vector2(1.6, 1.6)
+texture = SubResource("AtlasTexture_crate")
+
+[node name="HouseRoof" type="StaticBody2D" parent="VillageScenery/CottageHouse"]
+position = Vector2(0, -56)
+collision_layer = 1
+collision_mask = 0
+
+[node name="RoofSprite" type="NinePatchRect" parent="VillageScenery/CottageHouse/HouseRoof"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+texture = SubResource("AtlasTexture_roof")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+axis_stretch_horizontal = 1
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="VillageScenery/CottageHouse/HouseRoof"]
+polygon = PackedVector2Array(-70, -12, 70, -12, 70, 12, -70, 12)
 
 [node name="WorldGeometry" type="Node2D" parent="."]
 
@@ -45,7 +145,7 @@ offset_left = -200.0
 offset_top = -10.0
 offset_right = 190.0
 offset_bottom = 40.0
-texture = SubResource("AtlasTexture_ground")
+texture = SubResource("AtlasTexture_grass")
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
@@ -66,7 +166,7 @@ offset_left = -150.0
 offset_top = -10.0
 offset_right = 150.0
 offset_bottom = 40.0
-texture = SubResource("AtlasTexture_ground")
+texture = SubResource("AtlasTexture_grass")
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
@@ -87,7 +187,7 @@ offset_left = -160.0
 offset_top = -10.0
 offset_right = 180.0
 offset_bottom = 40.0
-texture = SubResource("AtlasTexture_ground")
+texture = SubResource("AtlasTexture_grass")
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
@@ -96,7 +196,7 @@ axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 
 [node name="Platform1" type="StaticBody2D" parent="WorldGeometry"]
-position = Vector2(190, 150)
+position = Vector2(250, 140)
 collision_layer = 1
 collision_mask = 0
 
@@ -108,7 +208,7 @@ offset_left = -45.0
 offset_top = -5.0
 offset_right = 45.0
 offset_bottom = 8.0
-texture = SubResource("AtlasTexture_platform")
+texture = SubResource("AtlasTexture_grass")
 patch_margin_left = 4
 patch_margin_top = 2
 patch_margin_right = 4
@@ -116,7 +216,7 @@ patch_margin_bottom = 2
 axis_stretch_horizontal = 1
 
 [node name="Platform2" type="StaticBody2D" parent="WorldGeometry"]
-position = Vector2(330, 115)
+position = Vector2(420, 105)
 collision_layer = 1
 collision_mask = 0
 
@@ -128,47 +228,7 @@ offset_left = -50.0
 offset_top = -5.0
 offset_right = 50.0
 offset_bottom = 8.0
-texture = SubResource("AtlasTexture_platform")
-patch_margin_left = 4
-patch_margin_top = 2
-patch_margin_right = 4
-patch_margin_bottom = 2
-axis_stretch_horizontal = 1
-
-[node name="HighSpireBridge" type="StaticBody2D" parent="WorldGeometry"]
-position = Vector2(490, 80)
-collision_layer = 1
-collision_mask = 0
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WorldGeometry/HighSpireBridge"]
-polygon = PackedVector2Array(-60, -5, 60, -5, 60, 8, -60, 8)
-
-[node name="NinePatchRect" type="NinePatchRect" parent="WorldGeometry/HighSpireBridge"]
-offset_left = -60.0
-offset_top = -5.0
-offset_right = 60.0
-offset_bottom = 8.0
-texture = SubResource("AtlasTexture_platform")
-patch_margin_left = 4
-patch_margin_top = 2
-patch_margin_right = 4
-patch_margin_bottom = 2
-axis_stretch_horizontal = 1
-
-[node name="Platform3" type="StaticBody2D" parent="WorldGeometry"]
-position = Vector2(670, 125)
-collision_layer = 1
-collision_mask = 0
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WorldGeometry/Platform3"]
-polygon = PackedVector2Array(-50, -5, 50, -5, 50, 8, -50, 8)
-
-[node name="NinePatchRect" type="NinePatchRect" parent="WorldGeometry/Platform3"]
-offset_left = -50.0
-offset_top = -5.0
-offset_right = 50.0
-offset_bottom = 8.0
-texture = SubResource("AtlasTexture_platform")
+texture = SubResource("AtlasTexture_grass")
 patch_margin_left = 4
 patch_margin_top = 2
 patch_margin_right = 4
@@ -207,33 +267,33 @@ position = Vector2(756, 192)
 
 [node name="Collectibles" type="Node2D" parent="."]
 
-[node name="Ember1" parent="Collectibles" instance=ExtResource("4_ember")]
-position = Vector2(190, 125)
+[node name="Coin1" parent="Collectibles" instance=ExtResource("4_ember")]
+position = Vector2(145, 140)
 
-[node name="Ember2" parent="Collectibles" instance=ExtResource("4_ember")]
-position = Vector2(330, 90)
+[node name="Coin2" parent="Collectibles" instance=ExtResource("4_ember")]
+position = Vector2(250, 115)
 
-[node name="Ember3" parent="Collectibles" instance=ExtResource("4_ember")]
-position = Vector2(460, 58)
+[node name="Coin3" parent="Collectibles" instance=ExtResource("4_ember")]
+position = Vector2(420, 80)
 
-[node name="Ember4" parent="Collectibles" instance=ExtResource("4_ember")]
-position = Vector2(520, 58)
+[node name="Coin4" parent="Collectibles" instance=ExtResource("4_ember")]
+position = Vector2(650, 95)
 
-[node name="Ember5" parent="Collectibles" instance=ExtResource("4_ember")]
-position = Vector2(670, 100)
-
-[node name="Ember6" parent="Collectibles" instance=ExtResource("4_ember")]
+[node name="Coin5" parent="Collectibles" instance=ExtResource("4_ember")]
 position = Vector2(850, 168)
 
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="Skeleton1" parent="Enemies" instance=ExtResource("3_enemy")]
-position = Vector2(340, 98)
+[node name="Ninja1" parent="Enemies" instance=ExtResource("3_enemy")]
+position = Vector2(280, 115)
 
-[node name="Skeleton2" parent="Enemies" instance=ExtResource("3_enemy")]
-position = Vector2(660, 108)
+[node name="DragonBoss" parent="Enemies" instance=ExtResource("3_enemy")]
+position = Vector2(450, 85)
 
-[node name="Skeleton3" parent="Enemies" instance=ExtResource("3_enemy")]
+[node name="HouseGuard" parent="Enemies" instance=ExtResource("3_enemy")]
+position = Vector2(650, 110)
+
+[node name="Ninja2" parent="Enemies" instance=ExtResource("3_enemy")]
 position = Vector2(890, 172)
 
 [node name="ExitShrine" parent="." instance=ExtResource("6_shrine")]
