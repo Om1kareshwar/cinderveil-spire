@@ -1,0 +1,250 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/sprites/parallax_bg.png" id="1_bg"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/enemy_skeleton.tscn" id="3_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/ember_pickup.tscn" id="4_ember"]
+[ext_resource type="PackedScene" path="res://scenes/spikes.tscn" id="5_spikes"]
+[ext_resource type="PackedScene" path="res://scenes/exit_shrine.tscn" id="6_shrine"]
+[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="7_hud"]
+[ext_resource type="Script" path="res://scripts/camera_controller.gd" id="8_cam"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tileset.png" id="9_tiles"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ground"]
+atlas = ExtResource("9_tiles")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_platform"]
+atlas = ExtResource("9_tiles")
+region = Rect2(0, 16, 16, 16)
+
+[node name="Main" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.2, 0.1)
+motion_mirroring = Vector2(384, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+position = Vector2(192, 108)
+texture = ExtResource("1_bg")
+
+[node name="WorldGeometry" type="Node2D" parent="."]
+
+[node name="Ground_Start" type="StaticBody2D" parent="WorldGeometry"]
+position = Vector2(190, 200)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WorldGeometry/Ground_Start"]
+polygon = PackedVector2Array(-200, -10, 190, -10, 190, 40, -200, 40)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="WorldGeometry/Ground_Start"]
+offset_left = -200.0
+offset_top = -10.0
+offset_right = 190.0
+offset_bottom = 40.0
+texture = SubResource("AtlasTexture_ground")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Ground_Mid" type="StaticBody2D" parent="WorldGeometry"]
+position = Vector2(570, 200)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WorldGeometry/Ground_Mid"]
+polygon = PackedVector2Array(-150, -10, 150, -10, 150, 40, -150, 40)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="WorldGeometry/Ground_Mid"]
+offset_left = -150.0
+offset_top = -10.0
+offset_right = 150.0
+offset_bottom = 40.0
+texture = SubResource("AtlasTexture_ground")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Ground_End" type="StaticBody2D" parent="WorldGeometry"]
+position = Vector2(920, 200)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WorldGeometry/Ground_End"]
+polygon = PackedVector2Array(-160, -10, 180, -10, 180, 40, -160, 40)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="WorldGeometry/Ground_End"]
+offset_left = -160.0
+offset_top = -10.0
+offset_right = 180.0
+offset_bottom = 40.0
+texture = SubResource("AtlasTexture_ground")
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="Platform1" type="StaticBody2D" parent="WorldGeometry"]
+position = Vector2(190, 150)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WorldGeometry/Platform1"]
+polygon = PackedVector2Array(-45, -5, 45, -5, 45, 8, -45, 8)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="WorldGeometry/Platform1"]
+offset_left = -45.0
+offset_top = -5.0
+offset_right = 45.0
+offset_bottom = 8.0
+texture = SubResource("AtlasTexture_platform")
+patch_margin_left = 4
+patch_margin_top = 2
+patch_margin_right = 4
+patch_margin_bottom = 2
+axis_stretch_horizontal = 1
+
+[node name="Platform2" type="StaticBody2D" parent="WorldGeometry"]
+position = Vector2(330, 115)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WorldGeometry/Platform2"]
+polygon = PackedVector2Array(-50, -5, 50, -5, 50, 8, -50, 8)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="WorldGeometry/Platform2"]
+offset_left = -50.0
+offset_top = -5.0
+offset_right = 50.0
+offset_bottom = 8.0
+texture = SubResource("AtlasTexture_platform")
+patch_margin_left = 4
+patch_margin_top = 2
+patch_margin_right = 4
+patch_margin_bottom = 2
+axis_stretch_horizontal = 1
+
+[node name="HighSpireBridge" type="StaticBody2D" parent="WorldGeometry"]
+position = Vector2(490, 80)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WorldGeometry/HighSpireBridge"]
+polygon = PackedVector2Array(-60, -5, 60, -5, 60, 8, -60, 8)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="WorldGeometry/HighSpireBridge"]
+offset_left = -60.0
+offset_top = -5.0
+offset_right = 60.0
+offset_bottom = 8.0
+texture = SubResource("AtlasTexture_platform")
+patch_margin_left = 4
+patch_margin_top = 2
+patch_margin_right = 4
+patch_margin_bottom = 2
+axis_stretch_horizontal = 1
+
+[node name="Platform3" type="StaticBody2D" parent="WorldGeometry"]
+position = Vector2(670, 125)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WorldGeometry/Platform3"]
+polygon = PackedVector2Array(-50, -5, 50, -5, 50, 8, -50, 8)
+
+[node name="NinePatchRect" type="NinePatchRect" parent="WorldGeometry/Platform3"]
+offset_left = -50.0
+offset_top = -5.0
+offset_right = 50.0
+offset_bottom = 8.0
+texture = SubResource("AtlasTexture_platform")
+patch_margin_left = 4
+patch_margin_top = 2
+patch_margin_right = 4
+patch_margin_bottom = 2
+axis_stretch_horizontal = 1
+
+[node name="LeftWall" type="StaticBody2D" parent="WorldGeometry"]
+position = Vector2(-8, 90)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WorldGeometry/LeftWall"]
+polygon = PackedVector2Array(-8, -100, 8, -100, 8, 120, -8, 120)
+
+[node name="RightWall" type="StaticBody2D" parent="WorldGeometry"]
+position = Vector2(1105, 90)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="WorldGeometry/RightWall"]
+polygon = PackedVector2Array(-8, -100, 8, -100, 8, 120, -8, 120)
+
+[node name="PitHazard" type="Node2D" parent="WorldGeometry"]
+
+[node name="Spikes1" parent="WorldGeometry/PitHazard" instance=ExtResource("5_spikes")]
+position = Vector2(400, 192)
+
+[node name="Spikes2" parent="WorldGeometry/PitHazard" instance=ExtResource("5_spikes")]
+position = Vector2(416, 192)
+
+[node name="Spikes3" parent="WorldGeometry/PitHazard" instance=ExtResource("5_spikes")]
+position = Vector2(740, 192)
+
+[node name="Spikes4" parent="WorldGeometry/PitHazard" instance=ExtResource("5_spikes")]
+position = Vector2(756, 192)
+
+[node name="Collectibles" type="Node2D" parent="."]
+
+[node name="Ember1" parent="Collectibles" instance=ExtResource("4_ember")]
+position = Vector2(190, 125)
+
+[node name="Ember2" parent="Collectibles" instance=ExtResource("4_ember")]
+position = Vector2(330, 90)
+
+[node name="Ember3" parent="Collectibles" instance=ExtResource("4_ember")]
+position = Vector2(460, 58)
+
+[node name="Ember4" parent="Collectibles" instance=ExtResource("4_ember")]
+position = Vector2(520, 58)
+
+[node name="Ember5" parent="Collectibles" instance=ExtResource("4_ember")]
+position = Vector2(670, 100)
+
+[node name="Ember6" parent="Collectibles" instance=ExtResource("4_ember")]
+position = Vector2(850, 168)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Skeleton1" parent="Enemies" instance=ExtResource("3_enemy")]
+position = Vector2(340, 98)
+
+[node name="Skeleton2" parent="Enemies" instance=ExtResource("3_enemy")]
+position = Vector2(660, 108)
+
+[node name="Skeleton3" parent="Enemies" instance=ExtResource("3_enemy")]
+position = Vector2(890, 172)
+
+[node name="ExitShrine" parent="." instance=ExtResource("6_shrine")]
+position = Vector2(1040, 168)
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(45, 168)
+
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target_node")]
+position = Vector2(192, 108)
+script = ExtResource("8_cam")
+target_node = NodePath("../Player")
+
+[node name="HUD" parent="." instance=ExtResource("7_hud")]

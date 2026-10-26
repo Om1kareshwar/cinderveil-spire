@@ -1,0 +1,3 @@
+@echo off
+echo Opening Cinderveil in Godot 4.3 Editor...
+start "" "C:\Users\omkar\Desktop\om's\code\Godot_v4.3-stable_win64.exe" --editor --path "%~dp0"

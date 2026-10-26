@@ -1,0 +1,11 @@
+# Godot 4+ cache and imported files
+.godot/
+
+# Crash and temporary files
+*.tmp
+*.log
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+desktop.ini

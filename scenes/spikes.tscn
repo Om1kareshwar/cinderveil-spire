@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/spikes_hazard.gd" id="1_spikes"]
+[ext_resource type="Texture2D" path="res://assets/sprites/tileset.png" id="2_tex"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_spike"]
+atlas = ExtResource("2_tex")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_spikes"]
+size = Vector2(14, 8)
+
+[node name="Spikes" type="Area2D"]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_spikes")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_spike")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_spikes")

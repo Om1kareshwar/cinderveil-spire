@@ -1,0 +1,3 @@
+@echo off
+echo Starting Cinderveil: Embers of the Spire in Godot 4.3...
+start "" "C:\Users\omkar\Desktop\om's\code\Godot_v4.3-stable_win64.exe" --path "%~dp0"
