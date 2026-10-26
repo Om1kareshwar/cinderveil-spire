@@ -14,9 +14,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if target_node:
 		var target_pos = target_node.global_position
-		# Limit camera bounds
-		target_pos.x = clamp(target_pos.x, 192.0, 960.0)
-		target_pos.y = clamp(target_pos.y, 108.0, 320.0)
+		# Lock horizontal tracking with stage limits, and keep vertical camera stable
+		target_pos.x = clamp(target_pos.x, 192.0, 915.0)
+		target_pos.y = clamp(target_pos.y - 12.0, 95.0, 112.0)
 		global_position = global_position.lerp(target_pos, smooth_speed * delta)
 
 	# Handle trauma screen shake

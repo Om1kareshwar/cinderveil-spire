@@ -71,6 +71,11 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
+	# Void death safety check: if player falls below the map
+	if global_position.y > 230.0 and not GameManager.is_game_over:
+		handle_void_fall()
+		return
+
 	update_timers(delta)
 	apply_gravity(delta)
 
@@ -210,6 +215,23 @@ func update_animations(delta: float) -> void:
 			sprite.frame = 20
 		State.DEAD:
 			sprite.frame = 23
+
+func handle_void_fall() -> void:
+	SoundManager.play_sfx("hit", 0.7)
+	GameManager.damage_player(1)
+	if GameManager.current_health > 0:
+		velocity = Vector2.ZERO
+		global_position = Vector2(45, 160)
+		current_state = State.IDLE
+		is_invulnerable = true
+		sprite.modulate = Color(4.0, 1.0, 1.0, 1.0)
+		get_tree().create_timer(0.5).timeout.connect(func():
+			sprite.modulate = Color.WHITE
+			is_invulnerable = false
+		)
+	else:
+		current_state = State.DEAD
+		velocity = Vector2.ZERO
 
 func take_damage(amount: int, knockback: Vector2 = Vector2.ZERO) -> void:
 	if is_invulnerable or GameManager.is_game_over:
